@@ -33,6 +33,7 @@ export default async function Home() {
         {recipes.map((recipe) => (
           <Card key={recipe.id} className="flex flex-col justify-between">
             <CardHeader className="flex-row gap-4 items-center">
+              <Avatar></Avatar>
               <div>
                 <CardTitle>{recipe.title}</CardTitle>
                 <CardDescription>{recipe.time} mins. to cook</CardDescription>
