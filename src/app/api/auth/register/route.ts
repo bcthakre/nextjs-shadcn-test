@@ -1,6 +1,7 @@
 import { connectToDatabase } from "@/app/helpers/server-helpers";
 import { NextResponse } from "next/server";
 import prisma from "../../../../../prisma";
+import bcrypt from "bcrypt";
 
 export const POST = async (req: Request) => {
   try {
@@ -8,10 +9,15 @@ export const POST = async (req: Request) => {
     if (!name || !email || !password)
       return NextResponse.json({ error: "missing fields" }, { status: 422 });
     await connectToDatabase();
-    const newUser = prisma.user.create({
-      data: { name, email, hashedPassword: password },
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await prisma.user.create({
+      data: { name, email, hashedPassword },
     });
+    return NextResponse.json({ user }, { status: 201 });
   } catch (error) {
+    console.log(error);
+    return NextResponse.json({ error: "error creating user" }, { status: 500 });
   } finally {
+    await prisma.$disconnect();
   }
 };
