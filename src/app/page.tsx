@@ -1,3 +1,7 @@
+"use client";
+
+import { useSession } from "next-auth/react";
+
 import {
   Card,
   CardContent,
@@ -9,6 +13,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]/route";
 
 interface Recipe {
   title: string;
@@ -19,20 +25,28 @@ interface Recipe {
   id: string;
 }
 
-async function getRecipes(): Promise<Recipe[]> {
-  const result = await fetch("http://localhost:4000/recipes");
-  // delay response
+// async function getRecipes(): Promise<Recipe[]> {
+//   const result = await fetch("http://localhost:4000/recipes");
+//   // delay response
 
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  return result.json();
-}
+//   await new Promise((resolve) => setTimeout(resolve, 3000));
+//   return result.json();
+// }
 
 export default async function Home() {
-  const recipes = await getRecipes();
+  // const data = await getServerSession(authOptions);
+  // const recipes = await getRecipes();
 
+  const {data} = useSession()
+
+  console.log(data)
   return (
     <>
-      <div className="grid grid-cols-3 gap-8">
+    <main>Hello World</main>
+    <div>
+      {JSON.stringify(data)}
+    </div>
+      {/* <div className="grid grid-cols-3 gap-8">
         {recipes.map((recipe) => (
           <Card key={recipe.id} className="flex flex-col justify-between">
             <CardHeader className="flex-row gap-4 items-center">
@@ -54,7 +68,7 @@ export default async function Home() {
             </CardFooter>
           </Card>
         ))}
-      </div>
+      </div> */}
     </>
   );
 }
