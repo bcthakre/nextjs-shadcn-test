@@ -1,6 +1,9 @@
+import { connectToDatabase } from "@/app/helpers/server-helpers";
 import { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
+import prisma from "../../../../../prisma";
+import bcrypt from "bcrypt";
 
 // Define a user interface
 interface User {
@@ -11,13 +14,7 @@ interface User {
   lastName: string;
 }
 
-// Mock user data
-const users: User[] = [
-  // Example users
-  { id: "1", email: "user1@example.com", password: "password123", name: "James", lastName: "Bond" },
-  { id: "2", email: "user2@example.com", password: "password456", name: "John", lastName: "Doe" },
-  // Add more users as needed
-];
+
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -31,17 +28,26 @@ export const authOptions: NextAuthOptions = {
           placeholder: "Enter Password",
         },
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
         if (!credentials || !credentials.email || !credentials.password) {
           return null;
         }
-        const user = users.find(
-          (item: User) => item.email === credentials.email
-        );
-        if (user && user.password === credentials.password) {
-          return user;
+        try {
+          await connectToDatabase();
+          const user = await prisma.user.findFirst({ where: { email: credentials.email } });
+          if (!user?.hashedPassword){
+            return null;
+          }
+          const isPasswordCorrect = await bcrypt.compare(credentials.password, user.hashedPassword || '');
+          if (isPasswordCorrect){
+            return user;
+          }
+        } catch (error) {
+          console.log(error);
+          return null;
+        } finally {
+          await prisma.$disconnect();
         }
-        return null;
       },
     }),
   ],
@@ -49,5 +55,6 @@ export const authOptions: NextAuthOptions = {
 };
 
 const handler = NextAuth(authOptions);
+
 
 export { handler as GET, handler as POST };
