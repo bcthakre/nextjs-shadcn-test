@@ -69,7 +69,7 @@ export const authOptions: NextAuthOptions = {
       clientId: googleClientId,
       clientSecret: googleClientSecret
     }),
-  ]
+  ],
   adapter: FirestoreAdapter({
     credential: cert({
       projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
