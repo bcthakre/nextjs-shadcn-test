@@ -3,8 +3,7 @@
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default async function Home() {
   const { data, status } = useSession();
