@@ -17,6 +17,7 @@ const page = () => {
       <Button onClick={() => signOut({ callbackUrl: "/login" })}>
         Sign Out{" "}
       </Button>
+      <h3>From Codespace</h3>
     </>
   );
 };
