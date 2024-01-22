@@ -18,6 +18,7 @@ const page = () => {
         Sign Out{" "}
       </Button>
       <h3>From Codespace</h3>
+      <h3>From local</h3>
     </>
   );
 };
