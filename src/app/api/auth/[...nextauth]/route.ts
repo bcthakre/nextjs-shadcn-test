@@ -6,7 +6,7 @@ import prisma from "../../../../../prisma";
 import bcrypt from "bcrypt";
 import { FirestoreAdapter } from "@auth/firebase-adapter";
 import { cert } from "firebase-admin/app";
-import GoogleProvider from 'next-auth/providers/google'
+import GoogleProvider from "next-auth/providers/google";
 
 // Define a user interface
 interface User {
@@ -17,6 +17,12 @@ interface User {
   lastName: string;
 }
 
+declare module "next-auth" {
+  interface Session {
+    accessToken?: string;
+  }
+}
+
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
 
@@ -25,9 +31,6 @@ if (!googleClientId || !googleClientSecret) {
     "Please define GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET environment variables inside .env.local"
   );
 }
-
-
-
 
 export const authOptions: NextAuthOptions = {
   // providers: [
@@ -67,7 +70,7 @@ export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: googleClientId,
-      clientSecret: googleClientSecret
+      clientSecret: googleClientSecret,
     }),
   ],
   adapter: FirestoreAdapter({
@@ -79,11 +82,10 @@ export const authOptions: NextAuthOptions = {
   }),
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: '/app/login'
+    signIn: "/app/login",
   },
 };
 
 const handler = NextAuth(authOptions);
-
 
 export { handler as GET, handler as POST };

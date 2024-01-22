@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-export default async function Home() {
+export default function Home() {
   const { data, status } = useSession();
   const router = useRouter();
 

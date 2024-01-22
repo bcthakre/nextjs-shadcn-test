@@ -10,8 +10,13 @@ const page = () => {
     <>
       <h1>Hi {session?.user?.name} !</h1>
       <h2>{session?.user?.email}</h2>
-      <Button onClick={() => signIn("google", { callbackUrl:'/'})}>Log in with Google </Button>
-      <Button onClick={() => signOut({callbackUrl: '/login'})}>Sign Out </Button>
+      {}
+      <Button onClick={() => signIn("google", { callbackUrl: "/" })}>
+        Log in with Google{" "}
+      </Button>
+      <Button onClick={() => signOut({ callbackUrl: "/login" })}>
+        Sign Out{" "}
+      </Button>
     </>
   );
 };
