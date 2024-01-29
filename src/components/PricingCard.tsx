@@ -1,3 +1,5 @@
+import { CheckIcon } from "lucide-react";
+
 const tiers = [
   {
     name: "Starter",
@@ -48,6 +50,41 @@ function PricingCard({ redirect }: { redirect: boolean }) {
               >
                 {tier.name}
               </h3>
+              <div className="mt-4 felx items-baseline gap-x-2">
+                {tier.priceMonthly ? (
+                  <>
+                    <span className="text-5xl font-bold tracking-tight text-gray-900">
+                      {tier.priceMonthly}
+                    </span>
+                    <span className="text-base font-semibold leading-7 text-gray-700">
+                      /monthly
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-5xl font-bold tracking-tight text-gray-900">
+                      Free
+                    </span>
+                  </>
+                )}
+              </div>
+              <p className="mt-6 text-base leading-7 text-gray-800">
+                {tier.description}
+              </p>
+              <ul
+                role="list"
+                className="mt-10 space-y-4 text-sm leading-6 text-gray-600"
+              >
+                {tier.features.map((feature) => (
+                  <li key={feature} className="flex gap-x-3">
+                    <CheckIcon
+                      className="h-6 w-5 flex-none text-indigo-600"
+                      aria-hidden="true"
+                    />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         ))}
