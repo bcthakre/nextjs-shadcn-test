@@ -35,10 +35,22 @@ function PricingCard({ redirect }: { redirect: boolean }) {
   return (
     <div>
       <div className="grid mx-auto max-wd-md grid-cols-1 gap-8 lg:max-wd-4xl lg:grid-cols-2">
-      {tiers.map((tier) => (
-         // return some JSX here based on the tier
-         <div key={tier.id}>{tier.name}</div>
-       ))}
+        {tiers.map((tier) => (
+          // return some JSX here based on the tier
+          <div
+            key={tier.id}
+            className="flex flex-col justify-between rounded-3xl bg-white p-8 shadow-xl ring-1 ring-gray-9001/10 sm:p-10"
+          >
+            <div>
+              <h3
+                id={tier.id + tier.name}
+                className="text-base font-semibold leading-7 text-indigo-700"
+              >
+                {tier.name}
+              </h3>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
