@@ -21,7 +21,7 @@
 
 // FROM .js
 
-/** @type {import('tailwindcss').Config} */
+
 // module.exports = {
 //   darkMode: ["class"],
 //   content: [
@@ -99,7 +99,7 @@
 //   plugins: [require("tailwindcss-animate")],
 // }
 
-
+/** @type {import('tailwindcss').Config} */
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
