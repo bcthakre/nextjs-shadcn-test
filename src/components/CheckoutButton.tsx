@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { useSession } from "next-auth/react";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase";
 
 function CheckoutButton() {
@@ -25,12 +25,27 @@ function CheckoutButton() {
         cancel_url: window.location.origin,
       }
     );
+    return onSnapshot(docRef, (snap) => {
+      const data = snap.data();
+      const url = data?.url;
+      const error = data?.error;
+
+      if (error) {
+        alert(`An error occured: ${error.message}`);
+        setLoading(false);
+      }
+
+      if (url) {
+        window.location.assign(url);
+        setLoading(false);
+      }
+    });
   };
 
   return (
     <div>
       <Button className="mt-8" onClick={() => createCheckoutSession()}>
-        Sign Up
+        {loading ? "loading..." : "Sign Up"}
       </Button>
     </div>
   );
