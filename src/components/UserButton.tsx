@@ -12,9 +12,14 @@ import UserAvatar from "./UserAvatar";
 import { Session } from "next-auth";
 import { Button } from "./ui/button";
 import { signIn, signOut } from "next-auth/react";
+import { useSubscriptionStore } from "../../store/store";
+import LoadingSpinner from "./LoadingSpinner";
+import { StarIcon } from "lucide-react";
 
 function UserButton({ session }: { session: Session | null }) {
-  console.log("session from header", session);
+  const subscription = useSubscriptionStore((state) => state.subscription);
+
+  console.log("subscription Status", subscription?.status);
 
   if (!session)
     return (
@@ -26,18 +31,32 @@ function UserButton({ session }: { session: Session | null }) {
     session && (
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <UserAvatar
-            name={session.user?.name}
-            image={session.user?.image}
-          />
+          <UserAvatar name={session.user?.name} image={session.user?.image} />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuLabel>{session.user?.name}</DropdownMenuLabel>
           <DropdownMenuSeparator />
+          {subscription === undefined && (
+            <DropdownMenuItem>
+              <LoadingSpinner />
+            </DropdownMenuItem>
+          )}
+          {subscription?.status === "active" && (
+            <>
+              <DropdownMenuLabel className=" text-emerald-950 flex items-center space-x-1 animate-pulse">
+                
+                <p>Pro</p>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator></DropdownMenuSeparator>
+              <DropdownMenuItem>Manage Account</DropdownMenuItem>
+            </>
+          )}
           {/* <DropdownMenuItem>Profile</DropdownMenuItem>
           <DropdownMenuItem>Billing</DropdownMenuItem>
           <DropdownMenuItem>Team</DropdownMenuItem> */}
-          <DropdownMenuItem onClick={() => signOut()}>Sign Out</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => signOut()}>
+            Sign Out
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     )

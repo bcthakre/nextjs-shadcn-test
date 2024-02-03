@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { useSession } from "next-auth/react";
 import { addDoc, collection, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase";
+import LoadingSpinner from "./LoadingSpinner";
 
 function CheckoutButton() {
   const { data: session } = useSession();
@@ -45,7 +46,7 @@ function CheckoutButton() {
   return (
     <div>
       <Button className="mt-8" onClick={() => createCheckoutSession()}>
-        {loading ? "loading..." : "Sign Up"}
+        {loading ? <LoadingSpinner /> : "Sign Up"}
       </Button>
     </div>
   );
